@@ -13,14 +13,19 @@ import psl_typ
 def discover(args, switch):
     "Search for Switches"
     print("Searching for ProSafe Plus Switches ...\n")
-    found = False
+    found = []
     for data in switch.discover():
-        found = True
+        mac = None
         for entry in data.keys():
-            print(entry.get_name() + ': ' + data[entry])
-        print("")
+            if entry.get_name()=="MAC":
+                mac = data[entry]
+        if mac not in found:
+            found.append(mac)
+            for entry in data.keys():
+                print(entry.get_name() + ': ' + data[entry])
+            print("")
 
-    if not found:
+    if len(found)==0:
         print("No result received...")
         print("did you try to adjust your timeout?")
 
